@@ -25,4 +25,30 @@ export const getDaysForCalendar = (currentMonth)=>{
   });
   return days;
 }
+export const eventOptions = {
+  1 : {
+    background: "bg-light-orange",
+    side: "bg-dark-blue",
+    cameraBg: "bg-light-blue",
+    camera: "white",
+    title: "text-dark-blue",
+    text: "text-light-blue"
+  },
+  2 : {
+    background: "bg-dark-orange",
+    side: "bg-light-blue",
+    cameraBg: "bg-dark-blue",
+    camera: "white",
+    title: "text-dark-blue",
+    text: "text-light-blue"
+  },
+  3 : {
+    background: "bg-light-blue",
+    side: "bg-light-orange",
+    cameraBg: "bg-white",
+    camera: "blue",
+    title: "text-white",
+    text: "text-white"
+  }
+}
 export const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU","FRI","SAT"];
