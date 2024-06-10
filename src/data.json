@@ -1,10 +1,12 @@
-[
+{
+  "appCode":"success",
+  "events":[
   {
     "title": "Webinar: How to cope with trauma in professional life",
     "startTime": "2024-06-15T09:00:00+08:00",
     "endTime": "2024-06-15T09:30:00+08:00",
     "type": "Event",
-    "clienImg": "https://picsum.photos/200",
+    "clientImg": "https://picsum.photos/200",
     "option": "2"
   },
   {
@@ -12,7 +14,7 @@
     "startTime": "2024-06-15T09:00:00+08:00",
     "endTime": "2024-06-15T09:30:00+08:00",
     "type": "Appointment",
-    "clienImg": "https://picsum.photos/200",
+    "clientImg": "https://picsum.photos/200",
     "option": "3"
   },
   {
@@ -20,7 +22,7 @@
     "startTime": "2024-06-17T09:00:00+08:00",
     "endTime": "2024-06-17T09:30:00+08:00",
     "type": "Appointment",
-    "clienImg": "https://picsum.photos/200",
+    "clientImg": "https://picsum.photos/200",
     "option": "3"
   },
   {
@@ -28,7 +30,7 @@
     "startTime": "2024-06-17T09:00:00+08:00",
     "endTime": "2024-06-17T09:30:00+08:00",
     "type": "Appointment",
-    "clienImg": "https://picsum.photos/200",
+    "clientImg": "https://picsum.photos/200",
     "option": "3"
   },
   {
@@ -36,7 +38,7 @@
     "startTime": "2024-06-19T09:00:00+08:00",
     "endTime": "2024-06-19T09:30:00+08:00",
     "type": "Event",
-    "clienImg": "https://picsum.photos/200",
+    "clientImg": "https://picsum.photos/200",
     "option": "2"
   },
   {
@@ -44,7 +46,7 @@
     "startTime": "2024-06-23T09:00:00+08:00",
     "endTime": "2024-06-23T09:30:00+08:00",
     "type": "Event",
-    "clienImg": "https://picsum.photos/200",
+    "clientImg": "https://picsum.photos/200",
     "option": "2"
   },
   {
@@ -52,7 +54,7 @@
     "startTime": "2024-06-17T09:00:00+08:00",
     "endTime": "2024-06-17T09:30:00+08:00",
     "type": "Appointment",
-    "clienImg": "https://picsum.photos/200",
+    "clientImg": "https://picsum.photos/200",
     "option": "3"
-  }
-]
+  }]
+}

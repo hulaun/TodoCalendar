@@ -9,24 +9,72 @@ import { format,
 import { DownIcon, LeftIcon, RightIcon } from '../../components/Icons';
 import {eventOptions, getDaysForCalendar, daysOfWeek} from '../../utils/helpers.jsx'
 
-const classNames = (...classes) => {
-  return classes.filter(Boolean).join(' ');
-};
 
 const EventTile = ({ title, option }) => {
   return (
-    <div className={classNames('relative flex p-1 w-full rounded-sm',eventOptions[option].background)}>
-      <div className={classNames('absolute top-0 left-0 h-full rounded-l-lg w-1',eventOptions[option].side)}></div>
-      <h3 className={classNames('pl-1 font-semibold truncate',eventOptions[option].text)}>{title}</h3>
+    <div className={`relative flex w-full rounded-sm ${eventOptions[option].background}`}>
+      <div className={`absolute top-0 left-0 h-full rounded-l-lg w-1 ${eventOptions[option].side}`}></div>
+      <h3 className={`pl-1 font-semibold truncate ${eventOptions[option].text}`}>{title}</h3>
     </div>
   );
 };
 
 
 
-function MainCalendar({data}) {
+function MainCalendar({events}) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const days = getDaysForCalendar(currentMonth)
+
+  const daysForCalendar= (()=>
+    days.map((day, i) => {
+      const formattedDate = format(day, "d");
+      const eventsForDay = events && events.filter(event => isSameDay(day, parseISO(event.startTime)));
+      return(
+        <div
+          key={i}
+          className={`flex flex-col justify-start items-center gap-0.5 pt-1 border border-grey-400 text-xs aspect-square ${eventsForDay
+            ?
+            (
+              eventsForDay.length>0
+              ?
+              "bg-light-green"
+              :""
+            )
+            :""
+          }`}
+        >
+          <div className={`pt-1 w-6 aspect-square text-center rounded-full ${!isSameMonth(day,currentMonth)
+            ? "text-gray-400"
+            : isSameDay(day, new Date())
+            ? "bg-light-blue text-white"
+            : ""
+          }`}>
+            {formattedDate}
+          </div>
+          {
+            eventsForDay && eventsForDay.slice(0,2)
+            .map((event, index) => (
+              <EventTile
+                key={index}
+                title={event.title}
+                option={event.option}
+              />
+            ))
+          }
+          {
+            eventsForDay && eventsForDay.length>2
+            ?
+            <div className='text-dark-blue font-semibold'>
+              {`${eventsForDay.length-2} more`}
+            </div>
+            :
+            ""
+          }
+        </div>
+        )
+    })
+  )
+  
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
   };
@@ -34,9 +82,6 @@ function MainCalendar({data}) {
   const nextMonth = () => {
     setCurrentMonth(addMonths(currentMonth, 1));
   };
-
-  console.log(isSameDay(new Date(2024, 5, 15), parseISO(data[0].startTime)),data[0].startTime)
-
   return (
     <div className="hidden md:block bg-white mt-2 h-fit" style={{width:"40rem"}}>
       <div className="flex justify-between items-center p-4  mb-4">
@@ -61,43 +106,13 @@ function MainCalendar({data}) {
         {
           daysOfWeek.map((day, index)=>(
             <div key={index} className="text-gray-400 text-center text-xs">
-              {daysOfWeek[index]}
+              {day}
             </div>
           ))
         }
         {
-            days.map((day, i) => {
-              const formattedDate = format(day, "d");
-              return(
-                <div
-                  key={i}
-                  className={`flex flex-col justify-start items-center pt-3 border border-grey-400 text-xs aspect-square`}
-                >
-                  <div className={`px-1 rounded-full ${!isSameMonth(day,currentMonth)
-                    ? "text-gray-400"
-                    : isSameDay(day, new Date())
-                    ? "bg-light-blue text-white"
-                    : ""
-                  }`}>
-                    {formattedDate}
-                  </div>
-                  {
-                  data && data.filter(event => isSameDay(day, parseISO(event.startTime))).slice(0,2)
-                  .map((event, index) => (
-                    <EventTile
-                      key={index}
-                      title={event.title}
-                      option={event.option}
-                    />
-                  ))
-                  }
-                  {
-                  data && data.filter(event => isSameDay(day, parseISO(event.startTime))).lenght>2
-                  }
-                </div>
-                )
-            })
-          }
+          daysForCalendar()
+        }
       </div>
     </div>
   );

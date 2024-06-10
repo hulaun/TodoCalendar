@@ -1,13 +1,18 @@
 import React from "react";
 import SideBar from "./components/SideBar";
 import MainCalendar from "./components/MainCalendar";
-import data from '../data.json';
+import response from '../data.json';
 
 function Home() {
-
-  return ( <div className="flex flex-row justify-center h-full gap-2">
-    <SideBar data={data}/>
-    <MainCalendar data={data}/>
+  var events=[];
+  if(response.appCode!=="success"){
+    console.error(response.appCode)
+  }else{
+    events = response.events
+  }
+  return ( <div className="flex flex-row justify-center h-screen gap-2">
+    <SideBar events={events}/>
+    <MainCalendar events={events}/>
   </div> );
 }
 

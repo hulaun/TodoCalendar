@@ -14,30 +14,39 @@ const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ');
 };
 
-const EventCard = ({ title, startTime, endTime, type="Event", option }) => {
+const EventCard = ({ title, startTime, endTime,clientImg, type="Event", option }) => {
 
   const time1 = format(startTime,'K:mm a')
   const time2 = format(endTime,'K:mm a O')
   const time = "hihi"
   return (
-    <div className={classNames('relative flex p-4 rounded-lg mb-4',eventOptions[option].background)}>
+    <div className={classNames('relative flex justify-between p-4 rounded-lg mb-4',eventOptions[option].background)}>
       <div className={classNames('absolute top-0 left-0 h-full rounded-l-lg w-1',eventOptions[option].side)}></div>
-      <div>
-        <h3 className={classNames('font-semibold',eventOptions[option].title)}>{title}</h3>
+      <div className='basis-3/4'>
+        <h3 className={classNames('font-semibold line-clamp-2',eventOptions[option].title)}>{`${title}`}</h3>
         <p className={classNames("text-sm",eventOptions[option].text)}>{`${time1} - ${time2}`}</p>
-        {(type==="Appointment")?<a href="#" className={classNames("mt-2 inline-block",eventOptions[option].text)}>
-          View Client Profile
-        </a>:""}
+        {(type==="Appointment")
+        ?
+          <div className='flex pt-1 justify-start items-center'>
+            <img src={clientImg} className='rounded-full w-8 h-8 mr-2'/>
+            <a href="#" className={classNames("inline-block",eventOptions[option].text)}>
+              View Client Profile
+            </a>
+          </div>
+        :""}
       </div>
-      {(type==="Appointment")?<div className={classNames("flex justify-center items-center rounded-full w-8 h-8",eventOptions[option].cameraBg)}>
-      <CameraIcon color={eventOptions[option].camera}/>
-      </div>:""}
+      {(type==="Appointment")
+      ?
+      <div className={classNames("flex justify-center items-center rounded-full h-8 w-8",eventOptions[option].cameraBg)}>
+        <CameraIcon color={eventOptions[option].camera}/>
+      </div>
+      :""}
     </div>
   );
 };
 
 
-function SideBar({data}) {
+function SideBar({events}) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const days = getDaysForCalendar(currentMonth)
 
@@ -51,7 +60,7 @@ function SideBar({data}) {
 
 
   return (
-    <div className="flex flex-col bg-white rounded-sm mt-2 w-96 h-full">
+    <div className="flex flex-col bg-white rounded-sm mt-2 w-96">
       <section className='p-4 border border-gray-300'>
         <div className="flex justify-center gap-2 items-center mb-4">
           <button onClick={prevMonth} className="text-light-blue font-bold">
@@ -90,19 +99,20 @@ function SideBar({data}) {
           }
         </div>
       </section>
-      <div className="border border-gray-300 px-4 py-6">
+      <div className="border border-gray-300 px-4 py-6 grow">
         <div className='flex justify-between items-center'>
           <h2 className="text-dark-blue text-xl font-bold">Upcoming Events</h2>
           <button className='px-4 py-2 bg-dark-blue text-white rounded-full text-xs'>View All</button>
         </div>
         <p className="text-gray-400 font-semibold pb-2">Today, 4 Apr</p>
-        {data && data.slice(0,3).map((event, index)=>(
+        {events && events.slice(0,3).map((event, index)=>(
           <EventCard
             key={index}
             title={event.title}
             startTime={event.startTime}
             endTime={event.endTime}
             type={event.type}
+            clientImg={event.clientImg}
             option={index%3+1}
           />))
         }
