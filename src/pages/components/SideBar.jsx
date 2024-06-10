@@ -4,7 +4,8 @@ import { format,
   subMonths, 
   isSameMonth, 
   isSameDay,
-  parseISO
+  isAfter,
+  parseISO,
 } from 'date-fns';
 import { CameraIcon, LeftIcon, RightIcon } from '../../components/Icons';
 import {eventOptions, getDaysForCalendar, daysOfWeek} from '../../utils/helpers.jsx'
@@ -18,7 +19,6 @@ const EventCard = ({ title, startTime, endTime,clientImg, type="Event", option }
 
   const time1 = format(startTime,'K:mm a')
   const time2 = format(endTime,'K:mm a O')
-  const time = "hihi"
   return (
     <div className={classNames('relative flex justify-between p-4 rounded-lg mb-4',eventOptions[option].background)}>
       <div className={classNames('absolute top-0 left-0 h-full rounded-l-lg w-1',eventOptions[option].side)}></div>
@@ -49,6 +49,10 @@ const EventCard = ({ title, startTime, endTime,clientImg, type="Event", option }
 function SideBar({events}) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const days = getDaysForCalendar(currentMonth)
+  const upcomingEvents = events && events
+    .filter(event => isAfter(parseISO(event.startTime), currentMonth))
+    .sort((a, b) => parseISO(a.startTime) - parseISO(b.startTime))
+    .slice(0,3)
 
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -105,7 +109,7 @@ function SideBar({events}) {
           <button className='px-4 py-2 bg-dark-blue text-white rounded-full text-xs'>View All</button>
         </div>
         <p className="text-gray-400 font-semibold pb-2">Today, 4 Apr</p>
-        {events && events.slice(0,3).map((event, index)=>(
+        {upcomingEvents && upcomingEvents.map((event, index)=>(
           <EventCard
             key={index}
             title={event.title}

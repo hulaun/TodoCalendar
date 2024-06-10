@@ -11,6 +11,7 @@ import {eventOptions, getDaysForCalendar, daysOfWeek} from '../../utils/helpers.
 
 
 const EventTile = ({ title, option }) => {
+  console.log(eventOptions[option].background)
   return (
     <div className={`relative flex w-full rounded-sm ${eventOptions[option].background}`}>
       <div className={`absolute top-0 left-0 h-full rounded-l-lg w-1 ${eventOptions[option].side}`}></div>
@@ -23,12 +24,12 @@ const EventTile = ({ title, option }) => {
 
 function MainCalendar({events}) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [monthEvents, setMonthEvents] = useState(events)
   const days = getDaysForCalendar(currentMonth)
-
   const daysForCalendar= (()=>
     days.map((day, i) => {
       const formattedDate = format(day, "d");
-      const eventsForDay = events && events.filter(event => isSameDay(day, parseISO(event.startTime)));
+      const eventsForDay = monthEvents && monthEvents.filter(event => isSameDay(day, parseISO(event.startTime)));
       return(
         <div
           key={i}
@@ -57,7 +58,7 @@ function MainCalendar({events}) {
               <EventTile
                 key={index}
                 title={event.title}
-                option={event.option}
+                option={index%3+1}
               />
             ))
           }
@@ -77,11 +78,16 @@ function MainCalendar({events}) {
   
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
+    //call api for current month events
+    //setMonthEvents(newEvents)
   };
 
   const nextMonth = () => {
     setCurrentMonth(addMonths(currentMonth, 1));
+    //call api for current month events
+    //setMonthEvents(newEvents)
   };
+
   return (
     <div className="hidden md:block bg-white mt-2 h-fit" style={{width:"40rem"}}>
       <div className="flex justify-between items-center p-4  mb-4">
